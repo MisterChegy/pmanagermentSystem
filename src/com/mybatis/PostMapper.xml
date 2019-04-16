@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.PostDao">
+	<!-- 查询所有岗位 -->
+	<select id="selectAllPost"  resultType="Post">
+		select * from post
+	</select>
+	<!-- 添加岗位 -->
+	<insert id="addPost"  parameterType="Post">
+		insert into post (id,pname,ptype,organization) values (null, #{pname}, #{ptype}, #{organization})
+	</insert>
+	<!-- 查询一个岗位 -->
+	<select id="selectAPost" resultType="Post" parameterType="Integer">
+		select * from  post where id = #{id}
+	</select>
+	<!-- 删除岗位 -->
+	<delete id="deletePost" parameterType="Integer">
+		delete from post where id = #{id}
+	</delete>
+	<!-- 修改岗位 -->
+	<update id="updatePost" parameterType="Post">
+    update post
+    <set>
+      <if test="pname != null">
+        pname = #{pname},
+      </if>
+      <if test="ptype != null">
+        ptype = #{ptype},
+      </if>
+      <if test="organization != null">
+        organization = #{organization}
+      </if>
+    </set>
+    	where id = #{id}
+  </update>
+	<!-- 条件查询 -->
+	<select id="selectPostCon" resultType="Post" parameterType="Post">
+		select *
+		  from post where 1=1
+		  <if test="pname != null and pname != ''">
+		  		and pname like concat('%',#{pname},'%') 
+		  </if>
+		  <if test="ptype != null and ptype != ''">
+		  		and ptype = #{ptype} 
+		 </if>
+	</select>
+</mapper>

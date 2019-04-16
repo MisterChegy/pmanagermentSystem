@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <typeAliases>
+        <typeAlias alias="Auser" type="com.po.Auser"/>
+        <typeAlias alias="Depart" type="com.po.Depart"/>
+        <typeAlias alias="Post" type="com.po.Post"/>
+        <typeAlias alias="Staff" type="com.po.Staff"/>
+        <typeAlias alias="Quit" type="com.po.Quit"/>
+        <typeAlias alias="Transfer" type="com.po.Transfer"/>
+        <typeAlias alias="Report" type="com.po.Report"/>
+     </typeAliases>
+	 <mappers>
+        <mapper resource="com/mybatis/AdminMapper.xml"/>
+        <mapper resource="com/mybatis/DepartMapper.xml"/>
+        <mapper resource="com/mybatis/PostMapper.xml"/>
+        <mapper resource="com/mybatis/StaffMapper.xml"/>
+        <mapper resource="com/mybatis/QuitMapper.xml"/>
+        <mapper resource="com/mybatis/TransferMapper.xml"/>
+        <mapper resource="com/mybatis/ReportMapper.xml"/>
+ 	</mappers>
+</configuration>
+

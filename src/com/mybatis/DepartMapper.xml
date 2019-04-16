@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.DepartDao">
+	<!-- 查询所有部门 -->
+	<select id="selectAllDepart"  resultType="Depart">
+		select id,dname,dtype,dtel,dfax,description,supdepartment,date_format(establishmentdate,'%Y-%m-%d') as establishmentdate1  from department
+	</select>
+	<!-- 添加部门 -->
+	<insert id="addDepart"  parameterType="Depart">
+		insert into department (id,dname,dtype,dtel,dfax,description,supdepartment,establishmentdate) 
+		values (null, #{dname}, #{dtype}, #{dtel}, #{dfax}, #{description}, #{supdepartment}, now())
+	</insert>
+	<!-- 查询一个部门 -->
+	<select id="selectADepart" resultType="Depart" parameterType="map">
+		select d1.id,d1.dname,d1.dtype,d1.dtel,d1.dfax,d1.description, 
+		<if test="sid != 0"><!-- sid为map中的参数 -->
+			 d1.supdepartment, d2.dname as supdepartment1,
+			 date_format(d1.establishmentdate,'%Y-%m-%d') as establishmentdate1  
+			from department d1,department d2 where d1.id = #{id} and d1.supdepartment = d2.id
+		</if>
+		<if test="sid == 0">
+				d1.supdepartment,'顶级部门' as supdepartment1,
+				date_format(d1.establishmentdate,'%Y-%m-%d') as establishmentdate1  
+			from department d1 where d1.id = #{id}
+		</if>
+	</select>
+	<!-- 查询子部门 -->
+	<select id="selectSubDepart" resultType="Depart" parameterType="Integer">
+			select *  from department where supdepartment = #{id}
+	</select>
+	<!-- 删除部门 -->
+	<delete id="deleteDepart" parameterType="Integer">
+		delete from department where id=#{id}
+	</delete>
+	<!-- 修改部门 -->
+	<update id="updateDepart" parameterType="Depart">
+    update department
+    <set>
+      <if test="dname != null">
+        dname = #{dname},
+      </if>
+      <if test="dtype != null">
+        dtype = #{dtype},
+      </if>
+      <if test="dtel != null">
+        dtel = #{dtel},
+      </if>
+      <if test="dfax != null">
+        dfax = #{dfax},
+      </if>
+      <if test="description != null">
+        description = #{description},
+      </if>
+      <if test="supdepartment != null">
+        supdepartment = #{supdepartment}
+      </if>
+    </set>
+    	where id = #{id}
+  </update>
+	<!-- 条件查询 -->
+	<select id="selectDepartCon" resultType="Depart" parameterType="Depart">
+		select id,dname,dtype,dtel,dfax,description,supdepartment,date_format(establishmentdate,'%Y-%m-%d') as establishmentdate1
+		  from department where 1=1
+		  <if test="dname != null and dname != ''">
+		  		and dname like concat('%',#{dname},'%') 
+		  </if>
+		  <if test="dtype != null and dtype != ''">
+		  		and dtype = #{dtype} 
+		 </if>
+	</select>
+</mapper>
